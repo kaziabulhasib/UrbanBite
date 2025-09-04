@@ -1,4 +1,4 @@
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const userModel = require("../models/user.model");
@@ -24,5 +24,18 @@ async function registerUser(req, res) {
     password: hashedPassword,
   });
 
-  const token =jwt.sign()
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+
+  res.cookie("food-token", token);
+
+  res.status(201).json({
+    message: "user register successfully",
+    user: {
+      _id: user._id,
+      email: user.email,
+      fullName: user.fullName,
+    },
+  });
 }
+
+module.exports = { registerUser };
