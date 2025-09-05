@@ -1,8 +1,8 @@
-const { JsonWebTokenError } = require("jsonwebtoken");
-const foodModel = require("../src/models/food.model");
+const jwt = require("jsonwebtoken");
+const foodModel = require("../models/food.model");
 
 async function AuthFoodPartnerMiddleware(req, res, next) {
-  const token = req.cookies.token;
+  const token = req.cookies["food-token"];
 
   if (!token) {
     return res.status(401).json({
