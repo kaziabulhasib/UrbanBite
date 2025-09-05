@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
-const foodModel = require("../models/food.model");
+const foodpartnerModel = require("../models/foodpartner.model");
+// const foodModel = require("../models/food.model");
 
 async function AuthFoodPartnerMiddleware(req, res, next) {
   const token = req.cookies["food-token"];
@@ -11,7 +12,7 @@ async function AuthFoodPartnerMiddleware(req, res, next) {
   }
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const foodPartner = await foodModel.findById(decoded.id);
+    const foodPartner = await foodpartnerModel.findById(decoded.id);
     req.foodPartner = foodPartner;
     next();
   } catch (error) {
