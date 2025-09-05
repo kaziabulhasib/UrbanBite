@@ -124,7 +124,7 @@ async function registerFoodPartner(req, res) {
   });
 }
 
-// to do 
+
 // login food partner
 
 async function loginFoodPartner(req, res) {
