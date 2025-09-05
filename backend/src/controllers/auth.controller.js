@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const userModel = require("../models/user.model");
+const foodpartnerModel = require("../models/foodpartner.model");
 
 // register user
 
@@ -77,4 +78,104 @@ async function loginUser(req, res) {
   });
 }
 
-module.exports = { registerUser, loginUser };
+// logout user
+
+function logoutUser(req, res) {
+  res.clearCookie("food-token");
+  res.status(200).json({
+    message: "user logout successfully",
+  });
+}
+
+// register food partner
+
+async function registerFoodPartner(req, res) {
+  const { name, email, password } = req.body;
+
+  const isFoodPartnerAlreadyExists = await foodpartnerModel.findOne({
+    email,
+  });
+
+  if (isFoodPartnerAlreadyExists) {
+    return res.status(400).json({
+      message: "food partner already exists",
+    });
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  const foodpartner = await foodpartnerModel.create({
+    name,
+    email,
+    password: hashedPassword,
+  });
+
+  const token = jwt.sign({ id: foodpartner._id }, process.env.JWT_SECRET);
+
+  res.cookie("food-token", token);
+
+  res.status(201).json({
+    message: "food partner register successfully",
+    foodpartner: {
+      _id: foodpartner._id,
+      email: foodpartner.email,
+      name: foodpartner.name,
+    },
+  });
+}
+
+// login food partner
+
+async function loginFoodPartner(req, res) {
+  const { email, password } = req.body;
+
+  const foodpartner = await foodpartnerModel.findOne({
+    email,
+  });
+
+  if (!foodpartner) {
+    return res.status(400).json({
+      message: "invalid food partner or password",
+    });
+  }
+
+  const isPasswordMatch = await bcrypt.compare(password, foodpartner.password);
+
+  if (!isPasswordMatch) {
+    return res.status(400).json({
+      message: "invalid food partner or password",
+    });
+  }
+
+  const token = jwt.sign({ id: foodpartner._id }, process.env.JWT_SECRET);
+
+  res.cookie("food-token", token);
+
+  res.status(200).json({
+    message: "food partner login successfully",
+    foodpartner: {
+      _id: foodpartner._id,
+      email: foodpartner.email,
+      name: foodpartner.name,
+    },
+  });
+}
+
+// logout food partner
+
+function logoutFoodPartner(req,res) {
+  res.clearCookie("food-token")
+  res.status(200).json({
+    message: "food partner logout successfully",
+  });
+
+}
+
+module.exports = {
+  registerUser,
+  loginUser,
+  logoutUser,
+  registerFoodPartner,
+  loginFoodPartner,
+  logoutFoodPartner
+};
