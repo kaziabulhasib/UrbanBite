@@ -1,8 +1,42 @@
 // FoodPartnerRegister.jsx
+import axios from "axios";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const FoodPartnerRegister = () => {
+  const navigate = useNavigate();
+  const baseUrl = import.meta.env.VITE_BASE_URL;
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const businessName = form.businessName.value;
+    const contactName = form.contactName.value;
+    const phone = form.phone.value;
+    const email = form.email.value;
+    const password = form.password.value;
+    const address = form.address.value;
+
+    const response = await axios.post(
+      `${baseUrl}/api/auth/foodpartner/register`,
+      {
+        name: businessName,
+        contactName,
+        phone,
+        email,
+        password,
+        address,
+      },
+      { withCredentials: true }
+    );
+
+    form.reset();
+
+    navigate("/");
+
+    console.log(response.data);
+  };
+
   return (
     <div className='min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-900 to-gray-800 px-6 py-10'>
       <div
@@ -36,7 +70,7 @@ const FoodPartnerRegister = () => {
         </nav>
 
         {/* Form */}
-        <form className='space-y-2 '>
+        <form onSubmit={handleSubmit} className='space-y-2 '>
           {/* Business Name */}
           <div>
             <label

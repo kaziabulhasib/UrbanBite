@@ -1,8 +1,29 @@
 // FoodPartnerLogin.jsx
+import axios from "axios";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const FoodPartnerLogin = () => {
+  const baseUrl = import.meta.env.VITE_BASE_URL;
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+
+    const response = await axios.post(
+      `${baseUrl}/api/auth/foodpartner/login`,
+      { email, password },
+      { withCredentials: true }
+    );
+
+    console.log(response.data);
+
+    navigate("/");
+  };
+
   return (
     <div className='min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-900 to-gray-800 px-4'>
       <div
@@ -22,7 +43,7 @@ const FoodPartnerLogin = () => {
         </header>
 
         {/* Form */}
-        <form className='mt-6 space-y-4'>
+        <form onSubmit={handleSubmit} className='mt-6 space-y-4'>
           {/* Email */}
           <div>
             <label htmlFor='email' className='block text-gray-300 text-sm mb-1'>
