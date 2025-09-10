@@ -1,11 +1,10 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-
 import FoodPartnerLogin from "../pages/auth/FoodPartnerLogin";
 import FoodPartnerRegister from "../pages/auth/FoodPartnerRegister";
 import UserLogin from "../pages/auth/UserLogin";
 import UserRegister from "../pages/auth/UserRegister";
-import Home from "../pages/Home";
-import NotFound from "../pages/NotFound";
+import Home from "../pages/general/Home";
+import NotFound from "../pages/general/NotFound";
 
 const AppRoutes = () => {
   return (

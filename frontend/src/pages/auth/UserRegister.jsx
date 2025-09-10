@@ -1,7 +1,36 @@
+import axios from "axios";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const UserRegister = () => {
+  const baseUrl = import.meta.env.VITE_BASE_URL;
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const firstName = form.firstName.value;
+    const lastName = form.lastName.value;
+    const email = form.email.value;
+    const password = form.password.value;
+    form.reset();
+
+    const response = await axios.post(
+      `${baseUrl}/api/auth/user/register`,
+      {
+        fullName: firstName + " " + lastName,
+        email,
+        password,
+      },
+      {
+        withCredentials: true,
+      }
+    );
+
+    navigate("/");
+
+    console.log(response.data);
+  };
   return (
     <div className='min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-900 to-gray-800 px-4'>
       <div
@@ -35,7 +64,7 @@ const UserRegister = () => {
         </nav>
 
         {/* Form */}
-        <form className='mt-6 space-y-4'>
+        <form onSubmit={handleSubmit} className='mt-6 space-y-4'>
           {/* First + Last Name */}
           <div className='flex space-x-3'>
             <div className='w-1/2'>
