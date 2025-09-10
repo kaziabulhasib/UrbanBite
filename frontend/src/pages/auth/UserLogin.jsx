@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 
 const UserLogin = () => {
+  const baseUrl = import.meta.env.VITE_BASE_URL;
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -12,7 +13,7 @@ const UserLogin = () => {
     const password = e.target.password.value;
 
     const response = await axios.post(
-      "http://localhost:3000/api/auth/user/login",
+      `${baseUrl}/api/auth/user/login`,
       { email, password },
       { withCredentials: true }
     );
@@ -41,7 +42,7 @@ const UserLogin = () => {
         </header>
 
         {/* Form */}
-        <form className='mt-6 space-y-4' onSubmit={handleSubmit} noValidate>
+        <form onSubmit={handleSubmit} className='mt-6 space-y-4'>
           {/* Email */}
           <div>
             <label htmlFor='email' className='block text-gray-300 text-sm mb-1'>
