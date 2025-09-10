@@ -21,7 +21,7 @@ const FoodPartnerLogin = () => {
 
     console.log(response.data);
 
-    navigate("/");
+    navigate("/create-food");
   };
 
   return (

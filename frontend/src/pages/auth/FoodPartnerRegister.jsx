@@ -32,7 +32,7 @@ const FoodPartnerRegister = () => {
 
     form.reset();
 
-    navigate("/");
+    navigate("/create-food");
 
     console.log(response.data);
   };
