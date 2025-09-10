@@ -90,7 +90,7 @@ function logoutUser(req, res) {
 // register food partner
 
 async function registerFoodPartner(req, res) {
-  const { name, email, password } = req.body;
+  const { name, email, password, phone, address, contactName } = req.body;
 
   const isFoodPartnerAlreadyExists = await foodpartnerModel.findOne({
     email,
@@ -108,6 +108,9 @@ async function registerFoodPartner(req, res) {
     name,
     email,
     password: hashedPassword,
+    phone,
+    address,
+    contactName,
   });
 
   const token = jwt.sign({ id: foodpartner._id }, process.env.JWT_SECRET);
@@ -120,10 +123,12 @@ async function registerFoodPartner(req, res) {
       _id: foodpartner._id,
       email: foodpartner.email,
       name: foodpartner.name,
+      phone: foodpartner.phone,
+      address: foodpartner.address,
+      contactName: foodpartner.contactName,
     },
   });
 }
-
 
 // login food partner
 
@@ -164,12 +169,11 @@ async function loginFoodPartner(req, res) {
 
 // logout food partner
 
-function logoutFoodPartner(req,res) {
-  res.clearCookie("food-token")
+function logoutFoodPartner(req, res) {
+  res.clearCookie("food-token");
   res.status(200).json({
     message: "food partner logout successfully",
   });
-
 }
 
 module.exports = {
@@ -178,5 +182,5 @@ module.exports = {
   logoutUser,
   registerFoodPartner,
   loginFoodPartner,
-  logoutFoodPartner
+  logoutFoodPartner,
 };

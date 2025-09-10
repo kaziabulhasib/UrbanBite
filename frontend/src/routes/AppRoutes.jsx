@@ -1,16 +1,25 @@
-import React from "react";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import FoodPartnerLogin from "../pages/auth/FoodPartnerLogin";
+import FoodPartnerRegister from "../pages/auth/FoodPartnerRegister";
+import UserLogin from "../pages/auth/UserLogin";
+import UserRegister from "../pages/auth/UserRegister";
+import Home from "../pages/Home";
+import NotFound from "../pages/NotFound";
 
 const AppRoutes = () => {
   return (
     <Router>
       <Routes>
-        <Route path='/user/register' element={<h1>Register</h1>} />
-        <Route path='/user/login' element={<h1>login</h1>} />
-        <Route path='/food-partner/register' element={<h1>food partner register</h1>} />
-        <Route path='/food-partner/login' element={<h1>food partner login</h1>} />
-
+        <Route path='/' element={<Home />} />
+        <Route path='/user/register' element={<UserRegister />} />
+        <Route path='/user/login' element={<UserLogin />} />
+        <Route
+          path='/food-partner/register'
+          element={<FoodPartnerRegister />}
+        />
+        <Route path='/food-partner/login' element={<FoodPartnerLogin />} />
+        <Route path='*' element={<NotFound />} />
       </Routes>
     </Router>
   );
